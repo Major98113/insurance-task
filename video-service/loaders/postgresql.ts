@@ -33,7 +33,7 @@ class PostgresDB implements DBInterface{
             await this.client.connect();
             this.logger.logDBRequest("Connection to DB successfully finished");
         }
-        catch ( err: any ){
+        catch ( err ){
             this.logger.logError( err.message || "DB connection error" + JSON.stringify( err ) );
             throw new Error( "Internal error happended" );
         }
@@ -45,7 +45,7 @@ class PostgresDB implements DBInterface{
             await this.client.end();
             this.logger.logDBRequest("Disconnection from DB successfully finished");
         }
-        catch  ( err: any ) {
+        catch  ( err ) {
             this.logger.logError( err.message || "DB disconnection error" + JSON.stringify( err ) )
             throw new Error( "Internal error happended" );
         }
@@ -59,7 +59,7 @@ class PostgresDB implements DBInterface{
                 
             return await this.client.query(queryStr);
         }
-        catch ( err: any ) {
+        catch ( err ) {
             this.logger.logError( err.message || "DB query error" + JSON.stringify( err ) );
             throw new Error( "Internal error happended" );
         }
