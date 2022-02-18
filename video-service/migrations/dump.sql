@@ -1,10 +1,12 @@
 CREATE TABLE directors (
+	id TEXT not null,
 	first_name TEXT not null,
 	last_name TEXT not null,
 	PRIMARY KEY (first_name, last_name)
 );
 
 CREATE TABLE movies (
+	id TEXT not null,
 	name TEXT not null,
 	release_year INTEGER not null,
 	director_first_name TEXT not null,
