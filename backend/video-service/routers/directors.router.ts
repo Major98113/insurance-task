@@ -16,8 +16,11 @@ router.get('/', async ( req: express.Request, res: express.Response, next ) => {
     try {
         const directors = await DirectorsServiceInstance.getAllDirectors();
 
-        if ( directors )
-            return res.status(200).json({ directors });
+        if ( directors ) {
+            res.setHeader('X-Total-Count', String(directors.length));
+            res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count');
+            return res.status(200).json({ data: directors, total: directors.length });
+        }
 
         return next({
             statusCode: 400,
@@ -35,7 +38,7 @@ router.get('/:id', async ( req: express.Request, res: express.Response, next ) =
         const director: IDirector = await DirectorsServiceInstance.getDirectorById(id);
         
         if( director )
-            return res.status(200).json({ director });
+            return res.status(200).json({ data: director });
 
         return next({
             statusCode: 404,
@@ -52,7 +55,7 @@ router.post('/', async ( req: express.Request, res: express.Response, next ) => 
         const director: IDirector = await DirectorsServiceInstance.createDirector( req.body );
         
         if( director )
-            return res.status(200).json({ director })
+            return res.status(200).json({ data: director })
 
         return next({
             statusCode: 400,
