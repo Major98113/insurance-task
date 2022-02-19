@@ -16,8 +16,11 @@ router.get('/', async ( req: express.Request, res: express.Response, next ) => {
     try {
         const movies = await MoviesServiceInstance.getAllMovies();
 
-        if ( movies )
-            return res.status(200).json({ movies });
+        if ( movies ) {
+            res.setHeader('X-Total-Count', String(movies.length));
+            res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count');
+            return res.status(200).json({ data: movies, total: movies.length });
+        }
 
         return next({
             statusCode: 400,
@@ -35,7 +38,7 @@ router.get('/:id', async ( req: express.Request, res: express.Response, next ) =
         const movie: IMovie = await MoviesServiceInstance.getMovieById(id);
         
         if( movie )
-            return res.status(200).json({ movie });
+            return res.status(200).json({ data: movie });
 
         return next({
             statusCode: 404,
@@ -52,7 +55,7 @@ router.post('/', async ( req: express.Request, res: express.Response, next ) => 
         const movie: IMovie = await MoviesServiceInstance.createMovie( req.body );
         
         if( movie )
-            return res.status(200).json({ movie })
+            return res.status(200).json({ data: movie })
 
         return next({
             statusCode: 400,
